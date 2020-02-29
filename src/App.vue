@@ -1,28 +1,40 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Messages :messages="message"/>
+    <br/>
+    <input type="text" placeholder="Enter a message" v-model="newMessage"/>
+    <!-- <h3>{{newMessage}}</h3> -->
+    <button @click="sendMessage(newMessage)">Send Message</button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Messages from "./components/Messages.vue";
+import { db } from "./db";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Messages,
+  },
+  data() {
+    return {
+      message: [],
+      newMessage: '',
+    }
+  },
+  firestore: {
+    message: db.collection("messages").orderBy('createdAt'),
+  }, 
+  methods: {
+    sendMessage(newMessage){
+      db.collection("messages").add({
+        createdAt: new Date(),
+        value: newMessage,
+        })
+      // this.message = [...this.message, newMessage];
+      this.newMessage = "";
+    },
+  },
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
