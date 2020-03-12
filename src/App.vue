@@ -1,18 +1,28 @@
 <template>
-  <div>
+  <div id="app">
     <Messages :messages="message"/>
-    <br/>
-    <input type="text" placeholder="Enter a message" v-model="newMessage"/>
-    <!-- <h3>{{newMessage}}</h3> -->
-    <button @click="sendMessage(newMessage)">Send Message</button>
-
-    <button class="bg-blue-500 hover:bg-blue-1000 text-white font-bold py-2 px-4 rounded-full">
-      STYLE ME
-    </button>
-
+    <div id="send">
+      <input id="msg" class="py-2" type="text" placeholder="Enter a message" v-model="newMessage"/>
+      <button class="bg-red-500 font-bold text-white py-2 px-4" @click="sendMessage(newMessage)">Send Message</button>
+    </div>
   </div>
 </template>
 
+<style scoped>
+  #send {
+    margin: auto;
+    width: 500px;
+    padding: 20px;
+  }
+  #msg {
+    width: 320px;
+    padding: 4px;
+    /* border: solid black 2px; */
+  }
+  #app {
+    /* background-color: #333;; */
+  }
+</style>
 
 <script>
 import Messages from "./components/Messages.vue";
