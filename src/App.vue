@@ -2,6 +2,7 @@
   <div id="app">
     <Messages :messages="message"/>
     <div id="send">
+      <span v-if="!isValidMessage">OOPS: Please enter a message!</span>
       <input id="msg" class="py-2" type="text" placeholder="Enter a message" v-model="newMessage"/>
       <button class="bg-red-500 font-bold text-white py-2 px-4" @click="sendMessage(newMessage)">Send Message</button>
     </div>
@@ -17,11 +18,11 @@
   #msg {
     width: 320px;
     padding: 4px;
-    /* border: solid black 2px; */
   }
   #app {
-    /* background-color: #333;; */
   }
+
+  
 </style>
 
 <script>
@@ -37,6 +38,7 @@ export default {
     return {
       message: [],
       newMessage: '',
+      isValidMessage: true,
     }
   },
   firestore: {
@@ -44,6 +46,12 @@ export default {
   }, 
   methods: {
     sendMessage(newMessage){
+      if(newMessage === ''){
+        this.isValidMessage = false;
+        return;
+      } else {
+        this.isValidMessage = true;
+      }
       db.collection("messages").add({
         createdAt: new Date(),
         value: newMessage,
